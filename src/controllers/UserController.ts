@@ -12,12 +12,13 @@ export class UserController {
         this.user = user;
     }
 
+    // everybody
     async getComments() {
         const comments = await this.entityManager.find(Comment);
         return comments;
     }
 
-    // nu e in conditie
+    // user, admin
     async addComment(text: string) {
 
         const comment = new Comment();
@@ -31,7 +32,13 @@ export class UserController {
         return comment;
     }
 
-    static async addUser () {
+    // user
+    async deleteComment (commentId: number) {
 
     }
+
+    // moderator, admin
+    async deleteUserComment (commentId: number, userId: number) {}
+
+
 }
