@@ -1,28 +1,43 @@
-import { Person } from "./Person";
-import { Comment } from "./Comment";
-import { Entity, PrimaryGeneratedColumn, Column, getManager } from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, getManager } from "typeorm";
+import {Comment} from "./Comment";
 
 @Entity()
-export class User extends Person {
+export  class User {
+
+    entityManager: any;
+
+    constructor () {
+        this.entityManager = getManager();
+    }
+    
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    username: string;
+
+    @Column()
+    password: string;
+
+    @OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[];
 
     async getComments() {
-        const entityManager = getManager(); // you can also get it via getConnection().manager
-        const comments = await entityManager.find(Comment);
+        const comments = await this.entityManager.find(Comment);
         return comments;
     }
 
     async addComment(text) {
-        const entityManager = getManager();
-        const thisUser = await entityManager.findOne(User, { where: { id: this.id } })
-        const thisUserId = thisUser.id;
         
-        const comment = await entityManager.create(Comment, {
-            text: text,
-            person: thisUserId
-        })
-        entityManager.save(comment);
-        console.log("added comment", comment);
+
+        const comment = new Comment();
+        comment.text = "comment test";
+        await this.entityManager.save(comment);
+
+        const user = await this.entityManager.findOne(User, { where: { id: this.id } })
+        user.comments = [comment];
+        await this.entityManager.save(user);
+
         return comment;
     }
-
 }

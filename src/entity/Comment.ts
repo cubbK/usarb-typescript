@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
-import {Person} from "./Person";
+import {User} from "./User";
 
 @Entity()
 export class Comment  {
@@ -10,6 +10,6 @@ export class Comment  {
     @Column()
     text: string;
 
-    @ManyToOne(type => Person, person => person.comments)
-    person: Person;   
+    @ManyToOne(type => User, user => user.comments)
+    user: User;   
 }
