@@ -17,6 +17,7 @@ export class UserController {
         return comments;
     }
 
+    // nu e in conditie
     async addComment(text: string) {
 
         const comment = new Comment();
@@ -28,5 +29,9 @@ export class UserController {
         await this.entityManager.save(user);
 
         return comment;
+    }
+
+    static async addUser () {
+
     }
 }
