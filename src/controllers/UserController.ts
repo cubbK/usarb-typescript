@@ -19,8 +19,8 @@ export class UserController {
     }
 
     // user, admin
+    
     async addComment(text: string) {
-
         const comment = new Comment();
         comment.text = "comment test";
         await this.entityManager.save(comment);
@@ -33,6 +33,7 @@ export class UserController {
     }
 
     // user
+    @isUser("User")
     async deleteComment (commentId: number) {
 
     }
@@ -40,9 +41,19 @@ export class UserController {
     // moderator, admin
     async deleteUserComment (commentId: number, userId: number) {}
 
-
+    getUser () {
+      return this.user
+    }
 }
+function isUser (userType: string) {
+  return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+    const newDescriptor = Object.assign({}, descriptor);
 
-const isUser = () => {
-    console.log(123)
+    newDescriptor.value = function () {
+      console.log(this.user)
+      return descriptor.value.apply(this, arguments);
+    }
+
+    return newDescriptor;
+  }
 }

@@ -17,5 +17,7 @@ createConnection().then(async connection => {
     const moderatorController = new UserController(moderator);
     const userController = new UserController(user);
 
+    userController.deleteComment(1);
+
 
 }).catch(error => console.log(error));
