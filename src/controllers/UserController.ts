@@ -42,3 +42,7 @@ export class UserController {
 
 
 }
+
+const isUser = () => {
+    console.log(123)
+}
