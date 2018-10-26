@@ -33,7 +33,7 @@ export class UserController {
     }
 
     // user
-    @isUser("User")
+    @isUser("admin")
     async deleteComment (commentId: number) {
 
     }
@@ -45,13 +45,17 @@ export class UserController {
       return this.user
     }
 }
+
 function isUser (userType: string) {
   return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const newDescriptor = Object.assign({}, descriptor);
 
     newDescriptor.value = function () {
-      console.log(this.user)
-      return descriptor.value.apply(this, arguments);
+      if(this.user.role.type == userType) {
+        return descriptor.value.apply(this, arguments);
+      } else {
+        throw new Error(`User is  ${userType} instead of ${this.user.role.type}`);
+      }
     }
 
     return newDescriptor;
