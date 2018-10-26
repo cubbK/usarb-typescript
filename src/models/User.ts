@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, getManager } from "typeorm";
 import {Comment} from "./Comment";
+import { Role } from "./Role";
 
 @Entity()
 export  class User {
@@ -21,6 +22,9 @@ export  class User {
 
     @OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
+
+    // @OneToMany(type => Role, role => role.users)
+    // role: Role;
 
     async getComments() {
         const comments = await this.entityManager.find(Comment);

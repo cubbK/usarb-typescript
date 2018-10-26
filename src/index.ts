@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { User } from "./entity/User"
-import { Comment } from "./entity/Comment";
+import { User } from "./models/User"
+import { Comment } from "./models/Comment";
 
 createConnection().then(async connection => {
 
