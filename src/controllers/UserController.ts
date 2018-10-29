@@ -45,7 +45,7 @@ export class UserController {
       if (userComment.id === commentId) {
         await this.entityManager.delete(Comment, commentId);
 
-        return console.log("deleting");
+        return console.log("deleted");
       }
     }
 
@@ -54,7 +54,9 @@ export class UserController {
 
   // moderator, admin
   @isUser("moderator", "admin")
-  async deleteUserComment(commentId: number, userId: number) {}
+  async deleteUserComment(commentId: number) {
+    await this.entityManager.delete(Comment, commentId);
+  }
 }
 
 function isUser(...usersType: string[]) {
