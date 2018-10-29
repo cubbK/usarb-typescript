@@ -19,17 +19,21 @@ export class UserController {
   }
 
   // user, admin
-
+  @isUser("user", "admin")
   async addComment(text: string) {
     const comment = new Comment();
-    comment.text = "comment test";
+    comment.text = text;
     await this.entityManager.save(comment);
 
-    const user = await this.entityManager.findOne(User, {
-      where: { id: this.user.id }
-    });
-    user.comments = [comment];
-    await this.entityManager.save(user);
+    console.log(this.user)
+
+    if (this.user.comments) {
+      this.user.comments = [...this.user.comments, comment];
+    } else {
+      this.user.comments = [comment];
+    }
+    
+    await this.entityManager.save(this.user);
 
     return comment;
   }

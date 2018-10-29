@@ -1,15 +1,14 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
-import {User} from "./User";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { User } from "./User";
 
 @Entity()
-export class Comment  {
+export class Comment {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  text: string;
 
-    @Column()
-    text: string;
-
-    @ManyToOne(type => User, user => user.comments)
-    user: User;   
+  @ManyToOne(type => User, user => user.comments)
+  user: User;
 }

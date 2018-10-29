@@ -1,23 +1,28 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { UserController } from "./controllers/UserController"
+import { UserController } from "./controllers/UserController";
 import { User } from "./entity/User";
 
-createConnection().then(async connection => {
-
-    const admin = await connection.manager.findOne(User, { where: { username: "admin1" } });
-    const moderator = await connection.manager.findOne(User, { where: { username: "moderator1" } });
-    const user = await connection.manager.findOne(User, { where: { username: "user1" } });
-
-    console.log(admin)
-    console.log(moderator)
-    console.log(user)
+createConnection()
+  .then(async connection => {
+    const admin = await connection.manager.findOne(User, {
+      where: { username: "admin1" }
+    });
+    const moderator = await connection.manager.findOne(User, {
+      where: { username: "moderator1" }
+    });
+    const user = await connection.manager.findOne(User, {
+      where: { username: "user1" }
+    });
 
     const adminController = new UserController(admin);
     const moderatorController = new UserController(moderator);
     const userController = new UserController(user);
 
-    adminController.deleteUserComment(1, 1);
+    await userController.addComment("user comment 3");
+    await adminController.addComment("admin comment 3");
 
-
-}).catch(error => console.log(error));
+    const comments = await userController.getComments();
+    console.log(comments);
+  })
+  .catch(error => console.log(error));

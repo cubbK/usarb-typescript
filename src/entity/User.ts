@@ -21,7 +21,9 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(type => Comment, comment => comment.user)
+  @OneToMany(type => Comment, comment => comment.user, {
+    eager: true
+  })
   comments: Comment[];
 
   @ManyToOne(type => Role, role => role.users, {
