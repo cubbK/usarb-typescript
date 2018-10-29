@@ -19,8 +19,7 @@ createConnection()
     const moderatorController = new UserController(moderator);
     const userController = new UserController(user);
 
-    await userController.addComment("user comment 3");
-    await adminController.addComment("admin comment 3");
+    await userController.deleteComment(37);
 
     const comments = await userController.getComments();
     console.log(comments);

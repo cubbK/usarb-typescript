@@ -25,14 +25,12 @@ export class UserController {
     comment.text = text;
     await this.entityManager.save(comment);
 
-    console.log(this.user)
-
     if (this.user.comments) {
       this.user.comments = [...this.user.comments, comment];
     } else {
       this.user.comments = [comment];
     }
-    
+
     await this.entityManager.save(this.user);
 
     return comment;
@@ -40,7 +38,19 @@ export class UserController {
 
   // user
   @isUser("user")
-  async deleteComment(commentId: number) {}
+  async deleteComment(commentId: number) {
+    const userComments = this.user.comments;
+
+    for (const userComment of userComments) {
+      if (userComment.id === commentId) {
+        await this.entityManager.delete(Comment, commentId);
+
+        return console.log("deleting");
+      }
+    }
+
+    throw new Error("Comment id does not exist or does not belong to the user");
+  }
 
   // moderator, admin
   @isUser("moderator", "admin")
